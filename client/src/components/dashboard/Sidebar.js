@@ -33,6 +33,7 @@ function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, 
           Create
         </Button>
 
+
         <Heading as="h4" size="md">My Lists</Heading>
         <VStack spacing={2} align="stretch">
           {lists.map(list => (
