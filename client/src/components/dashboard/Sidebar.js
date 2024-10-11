@@ -18,7 +18,7 @@ function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, 
       position="fixed"
       top="50px" // Start from below the header
       boxShadow="md"
-      mt="17px"
+      mt="22px"
     >
       <VStack spacing={4} align="stretch">
         {/* Create Task Button */}
@@ -67,7 +67,7 @@ function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, 
           borderRadius="full"
           width="full"
         >
-          Create New List
+          New List
         </Button>
       </VStack>
     </Box>
