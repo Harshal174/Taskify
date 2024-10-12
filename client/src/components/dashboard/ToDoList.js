@@ -7,7 +7,7 @@ import {
   IconButton,
   Input,
   Button,
-  HStack,
+  VStack,
   Menu,
   MenuButton,
   MenuList,
@@ -37,14 +37,14 @@ function TodoList({ tasks, onAddTask, onDeleteTask, onToggleTask, onEditTask }) 
 
   return (
     <Box mt={5}>
-      <HStack spacing={4} mb={4}>
-        <Input
-          placeholder="Add a new task"
-          value={taskInput}
-          onChange={(e) => setTaskInput(e.target.value)}
-        />
-        <Button colorScheme="teal" onClick={handleAddTask}>Add Task</Button>
-      </HStack>
+      <VStack spacing={4} mb={4} align="stretch"> {/* Use VStack for vertical stacking */}
+    <Input
+      placeholder="Add a new task"
+      value={taskInput}
+      onChange={(e) => setTaskInput(e.target.value)}
+    />
+    <Button colorScheme="teal" onClick={handleAddTask}>Add Task</Button>
+  </VStack>
 
       <List spacing={3}>
         {tasks.length === 0 ? (
