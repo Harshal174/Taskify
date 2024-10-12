@@ -62,10 +62,11 @@ function ListManager() {
     }
   };
 
-  const handleAddTask = (taskText) => {
+  const handleAddTask = (taskText,listId) => {
     if (taskText.trim()) {
       const updatedLists = lists.map(list => {
-        if (list.id === currentListId) { // Add to current list
+        if (list.id === listId) { // Add to current list
+          // console.log(currentListId);
           return { 
             ...list, 
             tasks: [...list.tasks, { id: Date.now(), text: taskText, completed: false }] 
@@ -82,6 +83,7 @@ function ListManager() {
     if (newTaskName.trim()) {
       const updatedLists = lists.map(list => {
         if (list.id === selectedListForTask) { // Use selected list for task in modal
+          console.log(list.id);
           return {
             ...list,
             tasks: [...list.tasks, { id: Date.now(), text: newTaskName, completed: false }]
@@ -191,7 +193,7 @@ function ListManager() {
                 <Box maxH="420px" overflowY="auto" borderWidth="1px" borderRadius="md" p={4}>
                   <TodoList 
                     tasks={list.tasks} 
-                    onAddTask={handleAddTask}
+                    onAddTask={(tasktext)=>handleAddTask(tasktext,list.id)}
                     onDeleteTask={handleDeleteTask}
                     onToggleTask={handleToggleTask}
                     onEditTask={handleEditTask}
