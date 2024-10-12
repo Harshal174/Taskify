@@ -65,7 +65,7 @@ function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, 
                   {list.name}
                 </Button>
                 {/* Delete button for non-default lists */}
-                {list.id !== lists[0].id && (
+                {/* {list.id !== lists[0].id && (
                   <IconButton 
                     icon={<FaTrash />} 
                     aria-label="Delete List" 
@@ -76,7 +76,7 @@ function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, 
                     colorScheme="red"
                     size="sm"
                   />
-                )}
+                )} */}
               </Box>
             ))}
           </VStack>
