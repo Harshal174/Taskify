@@ -3,10 +3,9 @@ import {
   Box,
   Button,
   VStack,
-  IconButton,
   Heading,
 } from '@chakra-ui/react';
-import { FaPlus, FaTrash } from 'react-icons/fa';
+import { FaPlus} from 'react-icons/fa';
 
 function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, onOpenListModal }) {
   return (
@@ -19,6 +18,7 @@ function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, 
       top="50px" // Start from below the header
       boxShadow="md"
       mt="22px"
+      zIndex={1}
     >
       <VStack spacing={4} align="stretch">
         {/* Create Task Button */}
@@ -46,7 +46,7 @@ function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, 
               >
                 {list.name}
               </Button>
-              {/* Delete button for non-default lists */}
+              {/* Delete button for non-default lists
               {list.id !== lists[0].id && (
                 <IconButton 
                   icon={<FaTrash />} 
@@ -54,7 +54,7 @@ function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, 
                   onClick={() => onDeleteList(list.id)} 
                   colorScheme="red"
                 />
-              )}
+              )} */}
             </Box>
           ))}
         </VStack>

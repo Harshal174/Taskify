@@ -1,17 +1,30 @@
 import React from 'react';
 import { Box, Heading, Flex, Spacer, IconButton } from '@chakra-ui/react';
 import { FaUserCircle } from 'react-icons/fa'; // Importing the user icon
-import { Link } from 'react-router-dom';
+import { RxHamburgerMenu } from "react-icons/rx";
+import { Link,useLocation } from 'react-router-dom';
 function Header() {
+  const location=useLocation();
   const handleProfileClick = () => {
     // Functionality to be added later
     console.log("Profile button clicked");
   };
 
+  const isListManagerPage=location.pathname==="/listmanager";
   return (
     <Box bg="teal.500" color="white" p={4}>
-      <Flex alignItems="center">
-        <Heading size="lg">TASKIFY</Heading>
+      <Flex alignItems="center" position="sticky" width="100%" >
+     {isListManagerPage&&(
+      <IconButton
+          icon={<RxHamburgerMenu/>}
+          aria-label="Open Menu"
+          colorScheme="teal"
+          _hover={{ bg: "teal.600" }}
+          marginRight={"14px"}
+        />
+     )}
+        <Heading size="lg">
+        TASKIFY</Heading>
         <Spacer />
         <Link to="/Profile">
         <IconButton

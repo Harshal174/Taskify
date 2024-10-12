@@ -12,7 +12,14 @@ import {
   ModalBody,
   ModalFooter,
   Select,
+  Flex,
+  Menu,
+  MenuItem,
+  MenuList,
+  MenuButton,
+  IconButton
 } from '@chakra-ui/react';
+import { FiMoreVertical } from 'react-icons/fi'
 import TodoList from './ToDoList'; // Import the TodoList component
 import Sidebar from './Sidebar'; // Import the Sidebar component
 
@@ -26,18 +33,22 @@ function ListManager() {
   
   const [newListName, setNewListName] = useState('');
   const [newTaskName, setNewTaskName] = useState('');
+  const [selectedListForTask, setSelectedListForTask] = useState(currentListId); // Track selected list for task
   
   const handleAddList = () => {
     if (newListName.trim()) {
       const newList = { id: Date.now(), name: newListName, tasks: [] };
       setLists([...lists, newList]);
       setNewListName('');
+      setCurrentListId(newList.id); // Automatically set the new list as the current list
+      setSelectedListForTask(newList.id); // Sync selected list for task modal
       setIsListModalOpen(false); // Close modal
     }
   };
 
   const handleSwitchList = (id) => {
     setCurrentListId(id);
+    setSelectedListForTask(id); // Sync selected list for task modal
   };
 
   const handleDeleteList = (id) => {
@@ -45,6 +56,7 @@ function ListManager() {
       setLists(lists.filter(list => list.id !== id));
       if (currentListId === id) {
         setCurrentListId(lists[0].id);
+        setSelectedListForTask(lists[0].id); // Sync selected list for task modal
       }
     }
   };
@@ -52,7 +64,7 @@ function ListManager() {
   const handleAddTask = (taskText) => {
     if (taskText.trim()) {
       const updatedLists = lists.map(list => {
-        if (list.id === currentListId) {
+        if (list.id === currentListId) { // Add to current list
           return { 
             ...list, 
             tasks: [...list.tasks, { id: Date.now(), text: taskText, completed: false }] 
@@ -61,6 +73,23 @@ function ListManager() {
         return list;
       });
       setLists(updatedLists);
+      setNewTaskName(''); // Clear task input after adding
+    }
+  };
+
+  const handleModalAddTask = () => {
+    if (newTaskName.trim()) {
+      const updatedLists = lists.map(list => {
+        if (list.id === selectedListForTask) { // Use selected list for task in modal
+          return {
+            ...list,
+            tasks: [...list.tasks, { id: Date.now(), text: newTaskName, completed: false }]
+          };
+        }
+        return list;
+      });
+      setLists(updatedLists);
+      setNewTaskName('');
       setIsTaskModalOpen(false); // Close modal
     }
   };
@@ -109,35 +138,68 @@ function ListManager() {
   };
 
   return (
-    <Box display="flex" mt="50px">
+    <Box display="flex" overflow="auto">
       
       {/* Sidebar */}
       <Sidebar 
         lists={lists}
         currentListId={currentListId}
-        onSwitchList={(id) => handleSwitchList(id)}
-        onDeleteList={(id) => handleDeleteList(id)}
+        onSwitchList={handleSwitchList}
+        onDeleteList={handleDeleteList}
         onAddTask={() => setIsTaskModalOpen(true)} // Open task modal
         onOpenListModal={() => setIsListModalOpen(true)} // Open list modal
       />
 
       {/* Main Content Area */}
       <Box marginLeft="250px" width="100%" p={5} mt={5}>
-        <Heading as="h2" size="lg" mb={4}>Tasks in {lists.find(list => list.id === currentListId)?.name}</Heading>
-
-        {/* Render TodoLists */}
-        {lists.map(list =>
-          list.id === currentListId && (
-            <TodoList 
-              key={list.id} 
-              tasks={list.tasks} 
-              onAddTask={handleAddTask}
-              onDeleteTask={handleDeleteTask}
-              onToggleTask={handleToggleTask}
-              onEditTask={handleEditTask}
-            />
-          )
-        )}
+        <Box width="100%" p={5} mt={5}>
+          <Flex 
+            direction="row" 
+            flexWrap="none" 
+            justifyContent="flex-start" 
+            gap={5} // Adjusts spacing between cards
+            overflowX="none"
+          >
+            {lists.map(list => (
+              <Box 
+                key={list.id} 
+                borderWidth="1px" 
+                borderRadius="lg" 
+                overflow="hidden" 
+                p={4}
+                width="400px" // Fixed width for each card
+                height="520px" // Maintain original height
+                boxShadow="md"
+                flexShrink={0} // Prevents cards from shrinking
+              >
+               <Box display="flex" alignItems="center" justifyContent="space-between">
+                  <Heading as="h3" size="md" mb={3}>{list.name}</Heading>
+                  <Menu>
+                    <MenuButton
+                      as={IconButton}
+                      icon={<FiMoreVertical />}
+                      variant="ghost"
+                      aria-label="Options"
+                      mb={2}
+                    />
+                    <MenuList>
+                      <MenuItem onClick={() => handleDeleteList(list.id)}>Delete List</MenuItem>
+                    </MenuList>
+                  </Menu>
+                </Box>
+                <Box maxH="420px" overflowY="auto" borderWidth="1px" borderRadius="md" p={4}>
+                  <TodoList 
+                    tasks={list.tasks} 
+                    onAddTask={handleAddTask}
+                    onDeleteTask={handleDeleteTask}
+                    onToggleTask={handleToggleTask}
+                    onEditTask={handleEditTask}
+                  />
+                </Box>
+              </Box>
+            ))}
+          </Flex>
+        </Box>
       </Box>
 
       {/* Create New List Modal */}
@@ -178,8 +240,8 @@ function ListManager() {
             <Select
               placeholder=""
               mt={3}
-              value={currentListId}
-              onChange={(e) => setCurrentListId(e.target.value)}
+              value={selectedListForTask} // Bind to selectedListForTask state              
+              onChange={(e) => setSelectedListForTask(Number(e.target.value))} // Update selected list for task
             >
               {lists.map(list => (
                 <option key={list.id} value={list.id}>
@@ -189,14 +251,13 @@ function ListManager() {
             </Select>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" onClick={() => handleAddTask(newTaskName)}>
+            <Button colorScheme="teal" onClick={handleModalAddTask}>
               Add Task
             </Button>
             <Button variant="ghost" onClick={() => setIsTaskModalOpen(false)}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-
     </Box>
   );
 }
