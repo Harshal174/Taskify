@@ -19,6 +19,7 @@ import {
   MenuButton,
   IconButton
 } from '@chakra-ui/react';
+import { FaTrash } from 'react-icons/fa';
 import { FiMoreVertical } from 'react-icons/fi'
 import TodoList from './ToDoList'; // Import the TodoList component
 import Sidebar from './Sidebar'; // Import the Sidebar component
@@ -183,7 +184,7 @@ function ListManager() {
                       mb={2}
                     />
                     <MenuList>
-                      <MenuItem onClick={() => handleDeleteList(list.id)}>Delete List</MenuItem>
+                      <MenuItem onClick={() => handleDeleteList(list.id)}><FaTrash style={{ marginRight: '8px' }} />Delete List</MenuItem>
                     </MenuList>
                   </Menu>
                 </Box>
