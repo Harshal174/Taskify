@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { FaPlus, FaCaretDown, FaTrash } from 'react-icons/fa';
 
-function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, onOpenListModal }) {
+function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, onOpenListModal, isOpen }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -30,16 +30,18 @@ function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, 
       boxShadow="md"
       mt="22px"
       zIndex={1}
-    >
+      display={isOpen ? 'block' : 'none'} // Show or hide based on isOpen state
+      >
       <VStack spacing={4} align="stretch">
         {/* Create Task Button */}
         <Button 
-          leftIcon={<FaPlus style={{ fontSize: '25px', color: 'white' }} />}
+          leftIcon={<FaPlus style={{ fontSize: '20px', color: 'white' }} />}
           colorScheme="teal" 
           borderRadius="full" 
           width="full"
           onClick={onAddTask}
           mt="50px"
+          
         >
           Create
         </Button>
