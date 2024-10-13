@@ -23,7 +23,7 @@ function Header({ onToggleSidebar }) { // Accept toggle function as a prop
   const isListManagerPage = location.pathname === "/listmanager";
 
   return (
-    <Box bg="teal.500" color="white" p={4}>
+    <Box bg="teal.500" color="white" p={4} maxH="70px" >
       <Flex alignItems="center" position="sticky" width="100%">
         {isListManagerPage && (
           <IconButton
