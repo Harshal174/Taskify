@@ -1,37 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   Box,
   Button,
   VStack,
   Heading,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  IconButton,
 } from '@chakra-ui/react';
-import { FaPlus, FaCaretDown, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaCaretDown} from 'react-icons/fa';
+import { useLocation } from 'react-router-dom';
 
-function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, onOpenListModal, isOpen }) {
+function Sidebar({ lists, currentListId, onSwitchList, onAddTask, onOpenListModal, isOpen ,onToggle}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const location = useLocation();
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  useEffect(()=>{
+    if(location.pathname !== "/listmanager" && isOpen){
+      onToggle();
+    }
+  },[location.pathname,isOpen,onToggle]);
   return (
-    <Box 
-      width="250px" 
-      height="calc(100vh - 50px)" 
-      bg="gray.100" 
-      p={4} 
-      position="fixed"
-      top="50px" 
-      boxShadow="md"
-      mt="22px"
-      zIndex={1}
-      display={isOpen ? 'block' : 'none'} // Show or hide based on isOpen state
-      >
+    <Box
+  width="250px"
+  height="calc(100vh - 50px)"
+  bg="gray.100"
+  p={4}
+  position="fixed"
+  top="50px"
+  boxShadow="md"
+  mt="22px"
+  zIndex={1}
+  visibility={isOpen ? 'visible' : 'hidden'} // Toggle visibility instead of display
+  opacity={isOpen ? 1 : 0} // Adjust opacity for smooth transition
+  transform={isOpen ? 'translateX(0)' : 'translateX(-250px)'} // Translate sidebar based on isOpen state
+  transition="transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s ease-in-out" // Smooth transition for all properties
+     >
       <VStack spacing={4} align="stretch">
         {/* Create Task Button */}
         <Button 
@@ -41,7 +45,6 @@ function Sidebar({ lists, currentListId, onSwitchList, onDeleteList, onAddTask, 
           width="full"
           onClick={onAddTask}
           mt="50px"
-          
         >
           Create
         </Button>

@@ -15,21 +15,14 @@ function App() {
   return (
     <Router>
       <Header onToggleSidebar={onToggle} /> {/* Pass toggle function to Header */}
-      <Sidebar 
-        lists={[{ id: 1, name: 'Task List 1' }, { id: 2, name: 'Task List 2' }]} // Example lists
-        currentListId={1} // Example current list ID
-        onSwitchList={(id) => console.log(`Switched to list ${id}`)} // Example switch list function
-        onDeleteList={(id) => console.log(`Deleted list ${id}`)} // Example delete list function
-        onAddTask={() => console.log('Add Task')} // Example add task function
-        onOpenListModal={() => console.log('Open List Modal')} // Example open list modal function
-        isOpen={isOpen} // Pass isOpen state to Sidebar
+      <Sidebar isOpen={isOpen} onToggle={onToggle} // Pass isOpen state to Sidebar
       />
       <Routes>
       <Route path='/' Component={Homepage} />
       <Route path='/login' Component={Login} />
       <Route path='/signup' Component={Signup} />
       <Route path="/profile" Component={Profile} />
-      <Route path='/listmanager' Component={ListManager} />
+      <Route path='/listmanager' element={<ListManager isOpen={isOpen} />} />
       </Routes>
     </Router>
   );

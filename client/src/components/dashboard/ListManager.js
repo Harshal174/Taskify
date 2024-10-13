@@ -24,7 +24,7 @@ import { FiMoreVertical } from 'react-icons/fi'
 import TodoList from './ToDoList'; // Import the TodoList component
 import Sidebar from './Sidebar'; // Import the Sidebar component
 
-function ListManager() {
+function ListManager({isOpen}) {
   const [lists, setLists] = useState([{ id: Date.now(), name: 'My Tasks', tasks: [] }]);
   const [currentListId, setCurrentListId] = useState(lists[0].id);
   
@@ -151,10 +151,11 @@ function ListManager() {
         onDeleteList={handleDeleteList}
         onAddTask={() => setIsTaskModalOpen(true)} // Open task modal
         onOpenListModal={() => setIsListModalOpen(true)} // Open list modal
+        isOpen={isOpen}
       />
 
       {/* Main Content Area */}
-      <Box marginLeft="250px" width="100%" p={5} mt={5}>
+      <Box marginLeft={isOpen ? "250px" : "0"} width="100%" p={5} mt={5} transition="margin-left 0.3s ease-in-out" >
         <Box width="100%" p={5} mt={5}>
           <Flex 
             direction="row" 
