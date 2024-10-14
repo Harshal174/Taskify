@@ -43,6 +43,7 @@ function Header({ onToggleSidebar }) { // Accept toggle function as a prop
               icon={<FaUserCircle />} 
               aria-label="User Profile"
               variant="outline"
+              border="teal"
               colorScheme="whiteAlpha"
               onClick={handleProfileClick} 
             />
