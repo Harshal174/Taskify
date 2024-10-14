@@ -1,60 +1,48 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  List,
-  ListItem,
-  Checkbox,
-  IconButton,
-  Input,
-  Button,
-  VStack,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-} from '@chakra-ui/react';
+import React, { useState, useCallback } from 'react';
+import { Box, List, ListItem, Checkbox, IconButton, Input, Button, VStack, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 import { FaTrash, FaEdit, FaEllipsisV } from 'react-icons/fa';
 
-function TodoList({ tasks, onAddTask, onDeleteTask, onToggleTask, onEditTask }) {
+const TodoList = ({ tasks, onAddTask, onDeleteTask, onToggleTask, onEditTask }) => {
   const [taskInput, setTaskInput] = useState('');
   const [editTaskId, setEditTaskId] = useState(null);
   const [editInput, setEditInput] = useState('');
 
-  const handleAddTask = () => {
+  const handleAddTask = useCallback(() => {
     if (taskInput.trim()) {
-      onAddTask(taskInput); // Call the function passed as a prop to add a new task
-      setTaskInput(''); // Clear input field after adding
+      onAddTask(taskInput);
+      setTaskInput(''); // Clear input after adding a task
     }
-  };
+  }, [taskInput, onAddTask]);
 
-  const handleUpdateTask = () => {
+  const handleUpdateTask = useCallback(() => {
     if (editInput.trim()) {
-      onEditTask(editTaskId, editInput); // Call edit function passed as a prop
+      onEditTask(editTaskId, editInput);
       setEditTaskId(null); // Clear edit state
-      setEditInput(''); // Clear input field after updating
+      setEditInput(''); // Clear input field
     }
-  };
+  }, [editInput, editTaskId, onEditTask]);
 
   return (
     <Box mt={5}>
-      <VStack spacing={4} mb={4} align="stretch"> {/* Use VStack for vertical stacking */}
-    <Input
-      placeholder="Add a new task"
-      value={taskInput}
-      onChange={(e) => setTaskInput(e.target.value)}
-    />
-    <Button colorScheme="teal" onClick={handleAddTask}>Add Task</Button>
-  </VStack>
-
+      <VStack spacing={4} mb={4} align="stretch">
+        <Input
+          placeholder="Add a new task"
+          value={taskInput}
+          onChange={(e) => setTaskInput(e.target.value)}
+        />
+        <Button colorScheme="teal" onClick={handleAddTask}>
+          Add Task
+        </Button>
+      </VStack>
       <List spacing={3}>
         {tasks.length === 0 ? (
           <ListItem>No tasks available. Please add a task.</ListItem>
         ) : (
-          tasks.map(task => (
+          tasks.map((task) => (
             <ListItem key={task.id} display="flex" alignItems="center">
-              <Checkbox 
-                isChecked={task.completed} 
-                onChange={() => onToggleTask(task.id)} // Call toggle function passed as a prop
+              <Checkbox
+                isChecked={task.completed}
+                onChange={() => onToggleTask(task.id)}
                 mr={3}
               />
               {editTaskId === task.id ? (
@@ -66,30 +54,31 @@ function TodoList({ tasks, onAddTask, onDeleteTask, onToggleTask, onEditTask }) 
                     size="sm"
                     mr={3}
                   />
-                  <Button colorScheme="teal" onClick={handleUpdateTask}>Update</Button>
+                  <Button colorScheme="teal" onClick={handleUpdateTask}>
+                    Update
+                  </Button>
                 </>
               ) : (
                 <>
                   <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
                     {task.text}
                   </span>
-                  {/* Vertical Ellipsis Menu */}
                   <Menu>
                     <MenuButton as={IconButton} icon={<FaEllipsisV />} aria-label="Options" ml="auto" />
                     <MenuList>
-                      <MenuItem 
-                        icon={<FaEdit />} 
-                        onClick={() => { 
-                          setEditTaskId(task.id); 
-                          setEditInput(task.text); 
+                      <MenuItem
+                        icon={<FaEdit />}
+                        onClick={() => {
+                          setEditTaskId(task.id);
+                          setEditInput(task.text);
                         }}
                       >
                         Edit Task
                       </MenuItem>
-                      <MenuItem 
-                        icon={<FaTrash />} 
+                      <MenuItem
+                        icon={<FaTrash />}
                         color="red.500"
-                        onClick={() => onDeleteTask(task.id)} // Call delete function passed as a prop
+                        onClick={() => onDeleteTask(task.id)}
                       >
                         Delete Task
                       </MenuItem>
@@ -103,6 +92,7 @@ function TodoList({ tasks, onAddTask, onDeleteTask, onToggleTask, onEditTask }) 
       </List>
     </Box>
   );
-}
+};
 
-export default TodoList;
+// Memoizing the component to prevent unnecessary re-renders
+export default React.memo(TodoList);
