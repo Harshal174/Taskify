@@ -26,7 +26,7 @@ function Header({ onToggleSidebar, onLogout }) { // Accept toggle and logout fun
     <Box bg="teal.500" color="white" p={4} maxH="70px">
       <Flex alignItems="center" position="sticky" width="100%">
         {isListManagerPage && (
-          <Tooltip label="Logout" placement="bottom" hasArrow>
+          <Tooltip label="Main-menu" placement="bottom" hasArrow>
           <IconButton
             icon={<RxHamburgerMenu />}
             aria-label="Open Menu"

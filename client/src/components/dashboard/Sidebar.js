@@ -5,6 +5,7 @@ import {
   VStack,
   Heading,
   Spacer,
+  Tooltip,
 } from '@chakra-ui/react';
 import { FaPlus, FaCaretDown } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
@@ -44,6 +45,7 @@ function Sidebar({ lists, currentListId, onSwitchList, onAddTask, onOpenListModa
     >
       <VStack spacing={4} align="stretch">
         {/* Create Task Button */}
+        <Tooltip label="Create Task" placement="bottom" hasArrow>
         <Button 
           leftIcon={<FaPlus style={{ fontSize: '20px', color: 'white' }} />}
           colorScheme="teal"
@@ -54,12 +56,12 @@ function Sidebar({ lists, currentListId, onSwitchList, onAddTask, onOpenListModa
         >
           Create Task
         </Button>
-
+</Tooltip>
         <Heading as="h4" size="md" display="flex" alignItems="center">
           Lists
-          <Button onClick={toggleDropdown} variant="link" rightIcon={<FaCaretDown />} ml={-4}>
+          <Tooltip label="Scroll-down Lists" placement="bottom" hasArrow><Button onClick={toggleDropdown} variant="link" rightIcon={<FaCaretDown />} ml={-4}>
             {/* Dropdown Arrow */}
-          </Button>
+          </Button></Tooltip>
         </Heading>
 
         {/* Dropdown for Lists */}
@@ -67,6 +69,7 @@ function Sidebar({ lists, currentListId, onSwitchList, onAddTask, onOpenListModa
           <VStack spacing={2} align="stretch">
             {lists.map(list => (
               <Box key={list.id} display="flex" alignItems="center">
+                <Tooltip label={list.name} placement="bottom" hasArrow>
                 <Button
                   onClick={() => onSwitchList(list.id)}
                   variant={currentListId === list.id ? 'solid' : 'outline'}
@@ -74,13 +77,14 @@ function Sidebar({ lists, currentListId, onSwitchList, onAddTask, onOpenListModa
                   flexGrow={1}
                 >
                   {list.name}
-                </Button>
+                </Button></Tooltip>
               </Box>
             ))}
           </VStack>
         )}
 
         {/* Button to open modal for adding a new list */}
+        <Tooltip label="New List" placement="bottom" hasArrow>
         <Button 
           leftIcon={<FaPlus />} 
           colorScheme="blue" 
@@ -91,7 +95,7 @@ function Sidebar({ lists, currentListId, onSwitchList, onAddTask, onOpenListModa
         >
           New List
         </Button>
-        
+        </Tooltip>
       </VStack>
     </Box>
   );
