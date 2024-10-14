@@ -4,12 +4,13 @@ import {
   Button,
   VStack,
   Heading,
+  Spacer,
 } from '@chakra-ui/react';
 import { FaPlus, FaCaretDown } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 
 // React.memo to prevent unnecessary re-renders
-function Sidebar({ lists, currentListId, onSwitchList, onAddTask, onOpenListModal, isOpen, onToggle }) {
+function Sidebar({ lists, currentListId, onSwitchList, onAddTask, onOpenListModal, isOpen, onToggle, onLogout }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
 
@@ -90,6 +91,7 @@ function Sidebar({ lists, currentListId, onSwitchList, onAddTask, onOpenListModa
         >
           New List
         </Button>
+        
       </VStack>
     </Box>
   );
